@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.Document;
@@ -7,8 +8,6 @@ import org.bson.conversions.Bson;
 
 import com.example.Connection.MongoProvider;
 import com.example.Model.Videoxogo;
-import com.mongodb.client.AggregateIterable;
-import com.mongodb.client.FindIterable;
 
 public class VideoxogoController {
 
@@ -44,20 +43,20 @@ public class VideoxogoController {
         }
     }
 
-    public FindIterable<Document> getVideoxogo(Bson filter){
-        FindIterable<Document>iterDoc = null;
+    public List<Document> getVideoxogo(Bson filter){
+        List<Document>iterDoc = new ArrayList<>();
         try (MongoProvider mongo = new MongoProvider()) {
-            iterDoc = mongo.partidas().find(filter);
+            mongo.partidas().find(filter).into(iterDoc);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return iterDoc;
     }
 
-    public AggregateIterable<Document> aggregateVideoxogo(List<Bson> pipeline){
-        AggregateIterable<Document>iterDoc = null;
+    public List<Document> aggregateVideoxogo(List<Bson> pipeline){
+        List<Document>iterDoc = new ArrayList<>();
         try (MongoProvider mongo = new MongoProvider()) {
-            iterDoc = mongo.partidas().aggregate(pipeline);
+            mongo.partidas().aggregate(pipeline).into(iterDoc);
         } catch (Exception e) {
             e.printStackTrace();
         }
